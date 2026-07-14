@@ -1,0 +1,6 @@
+{
+  "name": "المكتبة الذكية - الرشيدية",
+  "description": "بوابة معرفية ومكتبة رقمية شاملة مخصصة لطلبة الكلية متعددة التخصصات بالرشيدية",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
