@@ -6,6 +6,7 @@ import {
   RefreshCw, FileText, CheckCircle2, HelpCircle, Activity,
   FileDown, ChevronDown, Sparkles, Trash2, User, Lock, Settings
 } from 'lucide-react';
+import { supabase } from './supabaseClient';
 
 interface Book {
   'الشعبة': string;
@@ -367,7 +368,25 @@ export default function App() {
   });
   const [password, setPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string | null>(null);
+// دالة إرسال رابط إعادة تعيين كلمة السر بالبريد الأكاديمي
+const handleResetPassword = async () => {
+    if (!emailPrefix) {
+      alert("Please enter your email first");
+      return;
+    }
 
+    const fullEmail = `${emailPrefix.trim()}@edu.umi.ac.ma`;
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
+      redirectTo: `${window.location.origin}/update-password`,
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      alert("Password reset link sent successfully to your email!");
+    }
+  };
   // Fallback student details
   const [studentFullNameFr, setStudentFullNameFr] = useState<string>(() => {
     return localStorage.getItem('umi_logged_student_name_fr') || '';
