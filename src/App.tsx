@@ -467,28 +467,32 @@ const handleResetPassword = async () => {
     fetchSheetsData();
   }, []);
 
-  const handleResetPassword = async () => {
-    if (!emailPrefix.trim()) {
-      alert("الرجاء إدخال البريد الإلكتروني أولاً");
-      return;
-    }
+  // If logging in with the fallback account
+  if (isFallbackEmail) {
+    // Register student details
+    const newStudent: NoEmailStudent = {
+      id: Date.now().toString(),
+      fullName: cFullName,
+      cin: cCIN,
+      massar: cMassar,
+      timestamp: new Date().toLocaleString('ar-MA', { timeZone: 'Africa/Casablanca' })
+    };
 
-    let fullEmail = emailPrefix.trim().toLowerCase();
-    if (!fullEmail.endsWith('@edu.umi.ac.ma')) {
-      fullEmail += '@edu.umi.ac.ma';
-    }
+    // Save to noEmailStudents list
+    const updatedList = [newStudent, ...noEmailStudents.filter(s => s.cin !== cCIN)];
+    setNoEmailStudents(updatedList);
+    localStorage.setItem('umi_no_email_students', JSON.stringify(updatedList));
+  }
 
-    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-
-    if (error) {
-      alert("Error: " + error.message);
-    } else {
-      alert("Password reset link sent successfully to your email!");
-    }
+  setLoggedIn(true);
+  setIsAdmin(false);
+  localStorage.setItem('umi_logged_in', 'true');
+  localStorage.setItem('umi_is_admin', 'false');
+  localStorage.setItem('umi_email_prefix', emailPrefix);
+} else {
+  setLoginError("❌ كلمة المرور غير صحيحة! يرجى مراجعة كلمة مرور شعبة الرشيدية.");
+}
   };
-
   // --- Auth Handlers ---
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
