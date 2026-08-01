@@ -467,6 +467,28 @@ const handleResetPassword = async () => {
     fetchSheetsData();
   }, []);
 
+  const handleResetPassword = async () => {
+    if (!emailPrefix.trim()) {
+      alert("الرجاء إدخال البريد الإلكتروني أولاً");
+      return;
+    }
+
+    let fullEmail = emailPrefix.trim().toLowerCase();
+    if (!fullEmail.endsWith('@edu.umi.ac.ma')) {
+      fullEmail += '@edu.umi.ac.ma';
+    }
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
+      redirectTo: `${window.location.origin}/update-password`,
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      alert("Password reset link sent successfully to your email!");
+    }
+  };
+
   // --- Auth Handlers ---
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
