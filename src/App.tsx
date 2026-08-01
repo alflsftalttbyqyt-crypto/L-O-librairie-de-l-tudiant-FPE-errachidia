@@ -478,65 +478,22 @@ const handleResetPassword = async () => {
       timestamp: new Date().toLocaleString('ar-MA', { timeZone: 'Africa/Casablanca' })
     };
 
-    // Save to noEmailStudents list
-    const updatedList = [newStudent, ...noEmailStudents.filter(s => s.cin !== cCIN)];
-    setNoEmailStudents(updatedList);
-    localStorage.setItem('umi_no_email_students', JSON.stringify(updatedList));
-  }
-
-  setLoggedIn(true);
-  setIsAdmin(false);
-  localStorage.setItem('umi_logged_in', 'true');
-  localStorage.setItem('umi_is_admin', 'false');
-  localStorage.setItem('umi_email_prefix', emailPrefix);
-} else {
-  setLoginError("❌ كلمة المرور غير صحيحة! يرجى مراجعة كلمة مرور شعبة الرشيدية.");
-}
-  };
  // --- Reset Password Handler ---
   const handleResetPassword = async () => {
-    let inputVal = emailPrefix.trim().toLowerCase();
+    let inputVal = emailPrefix ? String(emailPrefix).trim().toLowerCase() : "";
     
     if (!inputVal) {
       alert("الرجاء إدخال البريد الإلكتروني أو اسم المستخدم أولاً");
       return;
     }
 
-    if (inputVal.includes("fallback") || inputVal.includes("errachidia") || !inputVal.includes('@')) {
+    if (inputVal.includes("fallback") || inputVal.includes("errachidia")) {
       alert("هذا الحساب يعتمد على كلمة مرور موحدة خاصة بالشعبة. يرجى مراجعة الإدارة أو المسؤول للحصول عليها.");
       return;
     }
 
-    // التأكد من عدم تكرار النطاق إذا كان مكتوباً مسبقاً
-    const fullEmail = inputVal.endsWith('@edu.umi.ac.ma') ? inputVal : `${inputVal}@edu.umi.ac.ma`;
-
-    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-
-    if (error) {
-      alert("خطأ: " + error.message);
-    } else {
-      alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني بنجاح!");
-    }
-  };
-
- // --- Reset Password Handler ---
-  const handleResetPassword = async () => {
-    let inputVal = emailPrefix.trim().toLowerCase();
-    
-    if (!inputVal) {
-      alert("الرجاء إدخال البريد الإلكتروني أو اسم المستخدم أولاً");
-      return;
-    }
-
-    if (inputVal.includes("fallback") || inputVal.includes("errachidia") || !inputVal.includes('@')) {
-      alert("هذا الحساب يعتمد على كلمة مرور موحدة خاصة بالشعبة. يرجى مراجعة الإدارة أو المسؤول للحصول عليها.");
-      return;
-    }
-
-    // التأكد من عدم تكرار النطاق إذا كان مكتوباً مسبقاً
-    const fullEmail = inputVal.endsWith('@edu.umi.ac.ma') ? inputVal : `${inputVal}@edu.umi.ac.ma`;
+    let fullEmail = inputVal.includes('@') ? inputVal : `${inputVal}@edu.umi.ac.ma`;
+    fullEmail = fullEmail.replace(/\s+/g, '');
 
     const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
       redirectTo: `${window.location.origin}/update-password`,
