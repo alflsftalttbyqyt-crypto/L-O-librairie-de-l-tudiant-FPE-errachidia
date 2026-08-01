@@ -8,7 +8,7 @@
     <!-- خطوط جوجل العربية -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@200..1000&family=Outfit:wght@300..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- ملف التصميم -->
     <link rel="stylesheet" href="/index.css">
@@ -17,18 +17,49 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2588826182097621" crossorigin="anonymous"></script>
   </head>
   
-  <body class="bg-[#faf7f0] text-gray-800 selection:bg-amber-200 selection:text-amber-950 font-['Cairo']">
+  <body class="bg-[#faf7f0] text-gray-800 font-['Cairo']">
+    
+    <!-- واجهة موقعك الأصلية -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- الجزء السفلي للموقع (الفوتر والأزرار الاحترافية) -->
-    <footer style="background-color: #1f2937; color: #ffffff; text-align: center; padding: 30px 20px; margin-top: 50px; font-family: 'Cairo', sans-serif; border-top: 4px solid #b45309;">
-        <div style="margin-bottom: 20px;">
-            <a href="about.html" style="color: #fef3c7; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">من نحن</a> |
-            <a href="privacy.html" style="color: #fef3c7; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">سياسة الخصوصية</a> |
-            <a href="contact.html" style="color: #fef3c7; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">اتصل بنا</a>
+    <!-- القسم السفلي الاحترافي (مخصص للزوار وجوجل أدسنس) -->
+    <div style="background-color: #ffffff; border-top: 1px solid #e5e7eb; padding: 50px 20px; margin-top: 50px;">
+        <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; text-align: right;">
+            
+            <!-- عمود من نحن -->
+            <div>
+                <h3 style="color: #b45309; font-size: 20px; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #fef3c7; padding-bottom: 10px; display: inline-block;">من نحن</h3>
+                <p style="color: #4b5563; font-size: 15px; line-height: 1.8;">
+                    "المكتبة الذكية بالرشيدية" هي منصة تعليمية حديثة تهدف إلى توفير المراجع، الكتب، والملخصات الأكاديمية للطلاب والباحثين. نسعى جاهدين لتسهيل الوصول إلى المعرفة ودعم المسيرة التعليمية للجميع عبر واجهة سهلة وسريعة.
+                </p>
+            </div>
+
+            <!-- عمود سياسة الخصوصية -->
+            <div>
+                <h3 style="color: #b45309; font-size: 20px; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #fef3c7; padding-bottom: 10px; display: inline-block;">سياسة الخصوصية</h3>
+                <p style="color: #4b5563; font-size: 15px; line-height: 1.8;">
+                    نحن نحترم خصوصية زوارنا بشدة. يستخدم هذا الموقع ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وعرض إعلانات مخصصة عبر شبكة Google AdSense. باستخدامك لموقعنا، فإنك توافق على سياستنا في الاستخدام.
+                </p>
+            </div>
+
+            <!-- عمود اتصل بنا -->
+            <div>
+                <h3 style="color: #b45309; font-size: 20px; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #fef3c7; padding-bottom: 10px; display: inline-block;">اتصل بنا</h3>
+                <p style="color: #4b5563; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                    يسعدنا تواصلكم معنا لأي استفسارات، أو اقتراحات، أو للإبلاغ عن أي مشكلة. يمكنكم مراسلتنا مباشرة وسنقوم بالرد في أقرب وقت.
+                </p>
+                <a href="mailto:lhcenoukhwawou500@gmail.com" style="display: inline-block; background-color: #1f2937; color: #ffffff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: bold; transition: background 0.3s;">
+                    ✉️ راسلنا عبر البريد
+                </a>
+            </div>
+
         </div>
-        <p style="margin: 0; font-size: 14px; color: #9ca3af;">&copy; 2026 المكتبة الذكية بالرشيدية. جميع الحقوق محفوظة.</p>
+    </div>
+
+    <!-- شريط الحقوق النهائي -->
+    <footer style="background-color: #1f2937; color: #9ca3af; text-align: center; padding: 20px; font-size: 14px; border-top: 4px solid #b45309;">
+        <p style="margin: 0;">&copy; 2026 المكتبة الذكية بالرشيدية. جميع الحقوق محفوظة.</p>
     </footer>
 
   </body>
