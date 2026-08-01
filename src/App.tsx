@@ -881,15 +881,26 @@ const handleResetPassword = async () => {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                id="login-btn"
-                className="w-full bg-gradient-to-r from-[#0f3d30] to-[#1e5d4a] hover:from-[#1e5d4a] hover:to-[#226e57] text-white font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border-b-4 border-emerald-900 active:scale-[0.98] mt-6 text-sm md:text-base flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>🔑 ولـوج مـؤمّـن للمكتبة</span>
-              </button>
-            </form>
+            <button
+  type="submit"
+  id="login-btn"
+  className="w-full bg-gradient-to-r from-[#0f3d30] to-[#1e5d4a] hover:from-[#1e5d4a] hover:to-[#226e57] text-white font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border-b-4 border-emerald-900 active:scale-[0.98] mt-6 text-sm md:text-base flex items-center justify-center gap-2 cursor-pointer"
+>
+  <span>🔑 ولـوج مـؤمّـن للمكتبة</span>
+</button>
 
+{/* زر نسيت كلمة السر؟ */}
+<div className="text-left mt-2">
+  <button
+    type="button"
+    onClick={handleResetPassword}
+    className="text-emerald-700 hover:text-emerald-900 text-xs font-bold underline cursor-pointer bg-transparent border-none"
+  >
+    نسيت كلمة السر؟
+  </button>
+</div>
+
+</form>
             {/* Quick Helper Credentials Guide */}
             <div className="mt-6 bg-[#f3edd9] rounded-xl p-4 border border-amber-300/40 text-xs text-right space-y-3.5 text-[#5c4015]">
               <div className="font-bold text-[#0f3d30] flex items-center gap-1.5 border-b border-amber-300/60 pb-1.5 mb-1.5">
