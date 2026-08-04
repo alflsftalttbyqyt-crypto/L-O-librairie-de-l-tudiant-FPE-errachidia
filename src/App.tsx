@@ -1606,3 +1606,4 @@ const handleResetPassword = async () => {
     </div>
   );
 }
+}
