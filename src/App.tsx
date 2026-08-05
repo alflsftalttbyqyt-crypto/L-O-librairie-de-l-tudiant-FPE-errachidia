@@ -477,35 +477,7 @@ const handleResetPassword = async () => {
       massar: cMassar,
       timestamp: new Date().toLocaleString('ar-MA', { timeZone: 'Africa/Casablanca' })
     };
-
- // --- Reset Password Handler ---
-  const handleResetPassword = async () => {
-    let inputVal = emailPrefix ? String(emailPrefix).trim().toLowerCase() : "";
-    
-    if (!inputVal) {
-      alert("الرجاء إدخال البريد الإلكتروني أو اسم المستخدم أولاً");
-      return;
-    }
-
-    if (inputVal.includes("fallback") || inputVal.includes("errachidia")) {
-      alert("هذا الحساب يعتمد على كلمة مرور موحدة خاصة بالشعبة. يرجى مراجعة الإدارة أو المسؤول للحصول عليها.");
-      return;
-    }
-
-    let fullEmail = inputVal.includes('@') ? inputVal : `${inputVal}@edu.umi.ac.ma`;
-    fullEmail = fullEmail.replace(/\s+/g, '');
-
-    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-
-    if (error) {
-      alert("خطأ: " + error.message);
-    } else {
-      alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني بنجاح!");
-    }
-  };
-
+}
   // --- Auth Handlers ---
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
