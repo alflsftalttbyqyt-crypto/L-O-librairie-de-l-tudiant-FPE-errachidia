@@ -18,8 +18,6 @@ interface Book {
 interface NoEmailStudent {
   id: string;
   fullName: string;
-  cin: string;
-  massar: string;
   timestamp: string;
 }
 
@@ -494,14 +492,6 @@ const handleResetPassword = async () => {
       setLoginError("❌ يرجى إدخال الاسم الكامل باللغة الفرنسية أولاً!");
       return;
     }
-    if (!cCIN) {
-      setLoginError("❌ يرجى إدخال رقم البطاقة الوطنية (CIN) أولاً!");
-      return;
-    }
-    if (!cMassar) {
-      setLoginError("❌ يرجى إدخال رقم مسار أولاً!");
-      return;
-    }
     if (!emailPrefix.trim()) {
       setLoginError("❌ يرجى إدخال البريد الأكاديمي أولاً!");
       return;
@@ -520,8 +510,6 @@ const handleResetPassword = async () => {
       localStorage.setItem('umi_email_prefix', emailPrefix);
       localStorage.setItem('umi_logged_student_name_fr', cFullNameFr);
       localStorage.setItem('umi_logged_student_name', cFullName);
-      localStorage.setItem('umi_logged_student_cin', cCIN);
-      localStorage.setItem('umi_logged_student_massar', cMassar);
       localStorage.setItem('umi_logged_student_dept', cDept);
       localStorage.setItem('umi_logged_student_semester', cSemester);
     } else if (password === "fpe2024") {
@@ -539,14 +527,11 @@ const handleResetPassword = async () => {
         const newStudent: NoEmailStudent = {
           id: Date.now().toString(),
           fullName: cFullName,
-          cin: cCIN,
-          massar: cMassar,
           timestamp: new Date().toLocaleString('ar-MA', { timeZone: 'Africa/Casablanca' })
         };
 
         // Save to noEmailStudents list
-        const updatedList = [newStudent, ...noEmailStudents.filter(s => s.cin !== cCIN)];
-        setNoEmailStudents(updatedList);
+        const updatedList = [newStudent, ...noEmailStudents.filter(s => s.fullName !== cFullName)];
         localStorage.setItem('umi_no_email_students', JSON.stringify(updatedList));
       }
 
@@ -575,8 +560,6 @@ const handleResetPassword = async () => {
     localStorage.removeItem('umi_email_prefix');
     localStorage.removeItem('umi_logged_student_name_fr');
     localStorage.removeItem('umi_logged_student_name');
-    localStorage.removeItem('umi_logged_student_cin');
-    localStorage.removeItem('umi_logged_student_massar');
     localStorage.removeItem('umi_logged_student_dept');
     localStorage.removeItem('umi_logged_student_semester');
   };
@@ -782,37 +765,7 @@ const handleResetPassword = async () => {
                     />
                   </div>
                 </div>
-
-                {/* 3. CIN & Massar in a responsive grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#0f3d30] mb-1">
-                      رقم البطاقة الوطنية (CIN) <span className="text-red-600 font-extrabold">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={studentCIN}
-                      onChange={(e) => setStudentCIN(e.target.value)}
-                      placeholder=""
-                      className="w-full px-3 py-1.5 text-xs border border-amber-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-400 bg-white text-center font-mono uppercase font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#0f3d30] mb-1">
-                      رقم مسار (N° Massar) <span className="text-red-600 font-extrabold">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={studentMassar}
-                      onChange={(e) => setStudentMassar(e.target.value)}
-                      placeholder=""
-                      className="w-full px-3 py-1.5 text-xs border border-amber-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-400 bg-white text-center font-mono uppercase font-bold"
-                    />
-                  </div>
-                </div>
-
+                
                 {/* 4. Dept & Semester in a responsive grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
@@ -1214,38 +1167,45 @@ const handleResetPassword = async () => {
                         <tbody className="divide-y divide-amber-100">
                           {noEmailStudents
                             .filter(student => {
-                              const q = noEmailSearch.toLowerCase().trim();
-                              if (!q) return true;
-                              return (
-                                student.fullName.toLowerCase().includes(q) ||
-                                student.cin.toLowerCase().includes(q) ||
-                                student.massar.toLowerCase().includes(q)
-                              );
-                            })
-                            .map((student) => (
-                              <tr key={student.id} className="hover:bg-amber-50/40 transition-colors">
-                                <td className="px-4 py-3 font-bold text-[#0f3d30] text-right">{student.fullName}</td>
-                                <td className="px-4 py-3 text-center font-mono font-bold text-amber-800">{student.cin}</td>
-                                <td className="px-4 py-3 text-center font-mono text-gray-600">{student.massar}</td>
-                                <td className="px-4 py-3 text-center text-[11px] text-gray-500 font-mono" dir="ltr">{student.timestamp}</td>
-                                <td className="px-4 py-3 text-center">
-                                  <button
-                                    onClick={() => handleDeleteNoEmailStudent(student.id)}
-                                    className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors cursor-pointer"
-                                    title="حذف الطالب من السجل"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              )}
-
+                            {noEmailStudents.length === 0 ? (
+  <div className="text-center py-8 bg-amber-50/50 border border-dashed border-amber-300 rounded-xl text-gray-500 space-y-2">
+    <div className="text-3xl">🍃</div>
+    <p className="text-xs font-bold text-[#0f3d30]">لم يتم تسجيل أي طالب بدون إيمايل بعد.</p>
+    <p className="text-[11px] text-gray-400">أي طالب يدخل عبر الحساب المشترك مع تدوين معلوماته سيظهر هنا فوراً.</p>
+  </div>
+) : (
+  <div className="overflow-x-auto rounded-xl border border-amber-200 bg-white shadow-sm">
+    <table className="w-full text-right text-xs md:text-sm border-collapse" dir="rtl">
+      <thead>
+        <tr className="bg-[#0f3d30] text-white font-['Amiri']">
+          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-right">الاسم الكامل</th>
+          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center">تاريخ الدخول</th>
+          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center w-12">إجراء</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-amber-100">
+        {noEmailStudents
+          .filter(student => {
+            const q = noEmailSearch.toLowerCase().trim();
+            if (!q) return true;
+            return student.fullName.toLowerCase().includes(q);
+          })
+          .map((student) => (
+            <tr key={student.id} className="hover:bg-amber-50/40 transition-colors">
+              <td className="px-4 py-3 font-bold text-[#0f3d30] text-right">{student.fullName}</td>
+              <td className="px-4 py-3 text-center text-[11px] text-gray-500 font-mono" dir="ltr">{student.timestamp}</td>
+              <td className="px-4 py-3 text-center">
+                {/* هنا أزرار التحكم/الحذف إن وجدت */}
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  </div>
+)}
+    </div>
+  )}
+      
               {/* CUSTOM GEOMETRIC DEPARTMENT TABS / CARDS (Instead of select-box) */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
