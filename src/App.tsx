@@ -1489,11 +1489,7 @@ const handleResetPassword = async () => {
                   })()}
                 </div>
               )}
-
-            </div>
-
-          </div>
-
+                              
           {/* BEAUTIFUL PROFESSIONAL FOOTER WITH EXPANDED METRICS AND AMAZIGH SYMBOL */}
           <div className="mt-12 border-t-2 border-amber-400/30 pt-8 text-center space-y-4">
             <div className="text-xs md:text-sm text-gray-600 font-medium flex flex-col gap-1.5 justify-center items-center">
