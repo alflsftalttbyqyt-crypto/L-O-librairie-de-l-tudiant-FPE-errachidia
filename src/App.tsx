@@ -1198,12 +1198,12 @@ const handleResetPassword = async () => {
                 {/* هنا أزرار التحكم/الحذف إن وجدت */}
               </td>
             </tr>
-))}
+            ))}
         </tbody>
       </table>
     </div>
   )}
-      
+                              
               {/* CUSTOM GEOMETRIC DEPARTMENT TABS / CARDS (Instead of select-box) */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
