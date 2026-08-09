@@ -1198,11 +1198,9 @@ const handleResetPassword = async () => {
                 {/* هنا أزرار التحكم/الحذف إن وجدت */}
               </td>
             </tr>
-          ))}
-      </tbody>
-    </table>
-  </div>
-)}
+))}
+        </tbody>
+      </table>
     </div>
   )}
       
