@@ -1526,5 +1526,3 @@ const handleResetPassword = async () => {
         </div>
       </div>
 }
-
-export default App;
