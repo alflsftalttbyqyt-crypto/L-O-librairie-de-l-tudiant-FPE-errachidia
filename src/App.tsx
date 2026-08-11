@@ -1527,8 +1527,6 @@ const handleResetPassword = async () => {
         </div>
       </div>
     </div>
-   </div>
-  </div>
 </div>
   )
 }
