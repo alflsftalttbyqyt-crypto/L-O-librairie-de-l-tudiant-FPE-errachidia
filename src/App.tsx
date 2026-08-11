@@ -1480,7 +1480,7 @@ const handleResetPassword = async () => {
                         </div>
                       );
                     } else {
-                     return (
+                   return (
                         <div className="bg-amber-50/50 border border-amber-200 rounded-lg p-4 text-center text-xs text-gray-500">
                           🍃 لا توجد مراجع إضافية مضافة بعد في شعبة {selectedDept}.
                         </div>
@@ -1489,13 +1489,9 @@ const handleResetPassword = async () => {
                   })()}
                 </div>
               )}
-
-            </div>
-
-          </div >
-
+                              
           {/* BEAUTIFUL PROFESSIONAL FOOTER WITH EXPANDED METRICS AND AMAZIGH SYMBOL */}
-          < div className="mt-12 border-t-2 border-amber-400/30 pt-8 text-center space-y-4" >
+          <div className="mt-12 border-t-2 border-amber-400/30 pt-8 text-center space-y-4">
             <div className="text-xs md:text-sm text-gray-600 font-medium flex flex-col gap-1.5 justify-center items-center">
               <span>للمزيد من المساعدة والشرح أو أي تساؤل تواصل معي مباشرة.</span>
               <span>ولا تتردد في الضغط على الاسم:</span>
@@ -1525,16 +1521,15 @@ const handleResetPassword = async () => {
               </p>
             </div>
 
-            <div className="text-[10px] text-gray-400">
-              جميع المقررات والملخصات تخضع لملكية أساتذة وطلبة الكلية متعددة التخصصات بالرشيدية.
-            </div>
-          </div >
-
-        </div >
-      )
-      }
-
-    </div >
-  );
+         <div className="text-[10px] text-gray-400">
+            جميع المقررات والملخصات تخضع لملكية أساتذة وطلبة الكلية متعددة التخصصات بالرشيدية.
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+  )
 }
 export default App;
