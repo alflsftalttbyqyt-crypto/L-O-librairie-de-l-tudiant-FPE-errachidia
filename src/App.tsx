@@ -1525,6 +1525,5 @@ const handleResetPassword = async () => {
             جميع المقررات والملخصات تخضع لملكية أساتذة وطلبة الكلية متعددة التخصصات بالرشيدية.
           </div>
         </div>
-  )
 }
 export default App;
