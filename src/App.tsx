@@ -1521,10 +1521,14 @@ const handleResetPassword = async () => {
               </p>
             </div>
 
-        <div className="text-[10px] text-gray-400">
+         <div className="text-[10px] text-gray-400">
             جميع المقررات والملخصات تخضع لملكية أساتذة وطلبة الكلية متعددة التخصصات بالرشيدية.
           </div>
         </div>
-      }
-
+      </div>
+    </div>
+  </div>
+</div>
+  )
+}
 export default App;
