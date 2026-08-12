@@ -6,7 +6,6 @@ import {
   RefreshCw, FileText, CheckCircle2, HelpCircle, Activity,
   FileDown, ChevronDown, Sparkles, Trash2, User, Lock, Settings
 } from 'lucide-react';
-import { supabase } from './supabaseClient';
 
 interface Book {
   'الشعبة': string;
@@ -366,25 +365,7 @@ export default function App() {
   });
   const [password, setPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string | null>(null);
-// دالة إرسال رابط إعادة تعيين كلمة السر بالبريد الأكاديمي
-const handleResetPassword = async () => {
-    if (!emailPrefix) {
-      alert("Please enter your email first");
-      return;
-    }
 
-    const fullEmail = `${emailPrefix.trim()}@edu.umi.ac.ma`;
-
-    const { data, error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-
-    if (error) {
-      alert("Error: " + error.message);
-    } else {
-      alert("Password reset link sent successfully to your email!");
-    }
-  };
   // Fallback student details
   const [studentFullNameFr, setStudentFullNameFr] = useState<string>(() => {
     return localStorage.getItem('umi_logged_student_name_fr') || '';
@@ -465,17 +446,6 @@ const handleResetPassword = async () => {
     fetchSheetsData();
   }, []);
 
-  // If logging in with the fallback account
-  if (isFallbackEmail) {
-    // Register student details
-    const newStudent: NoEmailStudent = {
-      id: Date.now().toString(),
-      fullName: cFullName,
-      cin: cCIN,
-      massar: cMassar,
-      timestamp: new Date().toLocaleString('ar-MA', { timeZone: 'Africa/Casablanca' })
-    };
-}
   // --- Auth Handlers ---
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -483,8 +453,6 @@ const handleResetPassword = async () => {
 
     const cFullNameFr = studentFullNameFr.trim();
     const cFullName = studentFullName.trim() || cFullNameFr;
-    const cCIN = studentCIN.trim().toUpperCase();
-    const cMassar = studentMassar.trim().toUpperCase();
     const cDept = studentDept;
     const cSemester = studentSemester;
 
@@ -492,10 +460,12 @@ const handleResetPassword = async () => {
       setLoginError("❌ يرجى إدخال الاسم الكامل باللغة الفرنسية أولاً!");
       return;
     }
+
     if (!emailPrefix.trim()) {
       setLoginError("❌ يرجى إدخال البريد الأكاديمي أولاً!");
       return;
     }
+
     // Standardize prefix and ensure it ends with or is appended with the university domain
     let fullEmail = emailPrefix.trim().toLowerCase();
     if (!fullEmail.endsWith('@edu.umi.ac.ma')) {
@@ -516,8 +486,6 @@ const handleResetPassword = async () => {
       // Save active student details for the student card
       localStorage.setItem('umi_logged_student_name_fr', cFullNameFr);
       localStorage.setItem('umi_logged_student_name', cFullName);
-      localStorage.setItem('umi_logged_student_cin', cCIN);
-      localStorage.setItem('umi_logged_student_massar', cMassar);
       localStorage.setItem('umi_logged_student_dept', cDept);
       localStorage.setItem('umi_logged_student_semester', cSemester);
 
@@ -560,6 +528,8 @@ const handleResetPassword = async () => {
     localStorage.removeItem('umi_email_prefix');
     localStorage.removeItem('umi_logged_student_name_fr');
     localStorage.removeItem('umi_logged_student_name');
+    localStorage.removeItem('umi_logged_student_cin');
+    localStorage.removeItem('umi_logged_student_massar');
     localStorage.removeItem('umi_logged_student_dept');
     localStorage.removeItem('umi_logged_student_semester');
   };
@@ -765,7 +735,7 @@ const handleResetPassword = async () => {
                     />
                   </div>
                 </div>
-                
+
                 {/* 4. Dept & Semester in a responsive grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
@@ -844,26 +814,15 @@ const handleResetPassword = async () => {
                 </div>
               </div>
 
-            <button
-  type="submit"
-  id="login-btn"
-  className="w-full bg-gradient-to-r from-[#0f3d30] to-[#1e5d4a] hover:from-[#1e5d4a] hover:to-[#226e57] text-white font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border-b-4 border-emerald-900 active:scale-[0.98] mt-6 text-sm md:text-base flex items-center justify-center gap-2 cursor-pointer"
->
-  <span>🔑 ولـوج مـؤمّـن للمكتبة</span>
-</button>
+              <button
+                type="submit"
+                id="login-btn"
+                className="w-full bg-gradient-to-r from-[#0f3d30] to-[#1e5d4a] hover:from-[#1e5d4a] hover:to-[#226e57] text-white font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border-b-4 border-emerald-900 active:scale-[0.98] mt-6 text-sm md:text-base flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>🔑 ولـوج مـؤمّـن للمكتبة</span>
+              </button>
+            </form>
 
-{/* زر نسيت كلمة السر؟ */}
-<div className="text-left mt-2">
-  <button
-    type="button"
-    onClick={handleResetPassword}
-    className="text-emerald-700 hover:text-emerald-900 text-xs font-bold underline cursor-pointer bg-transparent border-none"
-  >
-    نسيت كلمة السر؟
-  </button>
-</div>
-
-</form>
             {/* Quick Helper Credentials Guide */}
             <div className="mt-6 bg-[#f3edd9] rounded-xl p-4 border border-amber-300/40 text-xs text-right space-y-3.5 text-[#5c4015]">
               <div className="font-bold text-[#0f3d30] flex items-center gap-1.5 border-b border-amber-300/60 pb-1.5 mb-1.5">
@@ -1158,8 +1117,6 @@ const handleResetPassword = async () => {
                         <thead>
                           <tr className="bg-[#0f3d30] text-white font-['Amiri']">
                             <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-right">الاسم الكامل</th>
-                            <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center">رقم البطاقة الوطنية (CIN)</th>
-                            <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center">رقم مسار (Massar)</th>
                             <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center">تاريخ الدخول</th>
                             <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center w-12">إجراء</th>
                           </tr>
@@ -1167,43 +1124,26 @@ const handleResetPassword = async () => {
                         <tbody className="divide-y divide-amber-100">
                           {noEmailStudents
                             .filter(student => {
-                            {noEmailStudents.length === 0 ? (
-  <div className="text-center py-8 bg-amber-50/50 border border-dashed border-amber-300 rounded-xl text-gray-500 space-y-2">
-    <div className="text-3xl">🍃</div>
-    <p className="text-xs font-bold text-[#0f3d30]">لم يتم تسجيل أي طالب بدون إيمايل بعد.</p>
-    <p className="text-[11px] text-gray-400">أي طالب يدخل عبر الحساب المشترك مع تدوين معلوماته سيظهر هنا فوراً.</p>
-  </div>
-) : (
-  <div className="overflow-x-auto rounded-xl border border-amber-200 bg-white shadow-sm">
-    <table className="w-full text-right text-xs md:text-sm border-collapse" dir="rtl">
-      <thead>
-        <tr className="bg-[#0f3d30] text-white font-['Amiri']">
-          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-right">الاسم الكامل</th>
-          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center">تاريخ الدخول</th>
-          <th className="px-4 py-2.5 font-bold border-b border-amber-300 text-center w-12">إجراء</th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-amber-100">
-        {noEmailStudents
-          .filter(student => {
-            const q = noEmailSearch.toLowerCase().trim();
-            if (!q) return true;
-            return student.fullName.toLowerCase().includes(q);
-          })
-          .map((student) => (
-            <tr key={student.id} className="hover:bg-amber-50/40 transition-colors">
-              <td className="px-4 py-3 font-bold text-[#0f3d30] text-right">{student.fullName}</td>
-              <td className="px-4 py-3 text-center text-[11px] text-gray-500 font-mono" dir="ltr">{student.timestamp}</td>
-              <td className="px-4 py-3 text-center">
-                {/* هنا أزرار التحكم/الحذف إن وجدت */}
-              </td>
-            </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
-  )}
-                              
+                              const q = noEmailSearch.toLowerCase().trim();
+                              if (!q) return true;
+                              return student.fullName.toLowerCase().includes(q);
+                            })
+                            .map((student) => (
+                              <tr key={student.id} className="hover:bg-amber-50/40 transition-colors">
+                                <td className="px-4 py-3 font-bold text-[#0f3d30] text-right">{student.fullName}</td>
+                                <td className="px-4 py-3 text-center text-[11px] text-gray-500 font-mono" dir="ltr">{student.timestamp}</td>
+                                <td className="px-4 py-3 text-center">
+                                  {/* هنا أزرار التحكم/الحذف إن وجدت */}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* CUSTOM GEOMETRIC DEPARTMENT TABS / CARDS (Instead of select-box) */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -1480,7 +1420,7 @@ const handleResetPassword = async () => {
                         </div>
                       );
                     } else {
-                   return (
+                      return (
                         <div className="bg-amber-50/50 border border-amber-200 rounded-lg p-4 text-center text-xs text-gray-500">
                           🍃 لا توجد مراجع إضافية مضافة بعد في شعبة {selectedDept}.
                         </div>
@@ -1489,7 +1429,11 @@ const handleResetPassword = async () => {
                   })()}
                 </div>
               )}
-                              
+
+            </div>
+
+          </div>
+
           {/* BEAUTIFUL PROFESSIONAL FOOTER WITH EXPANDED METRICS AND AMAZIGH SYMBOL */}
           <div className="mt-12 border-t-2 border-amber-400/30 pt-8 text-center space-y-4">
             <div className="text-xs md:text-sm text-gray-600 font-medium flex flex-col gap-1.5 justify-center items-center">
@@ -1521,15 +1465,14 @@ const handleResetPassword = async () => {
               </p>
             </div>
 
-         <div className="text-[10px] text-gray-400">
+            <div className="text-[10px] text-gray-400">
               جميع المقررات والملخصات تخضع لملكية أساتذة وطلبة الكلية متعددة التخصصات بالرشيدية.
             </div>
-          </div >
+          </div>
 
-        </div >
-      )
-      }
+        </div>
+      )}
 
-    </div >
+    </div>
   );
 }
